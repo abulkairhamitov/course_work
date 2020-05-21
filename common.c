@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <malloc.h>
 #include <string.h>
-#include <conio.h>
 #include "./include/dbl_list.h"
 #include "./include/common.h"
 #include "./include/get.h"
@@ -184,9 +183,9 @@ int dbl_list()
                                             do
                                             {
                                                 system("cls");
-                                                printf("Do you want see list of managers? Press 1 if you want or press any key otherwise\n");
-                                                c = getch();
-                                                if (c == 49)
+                                                printf("Do you want see list of managers? (y/n)\n");
+                                                c = getchar();
+                                                if (c == 'Y' || c == 'y')
                                                     print_managers(HEAD);
                                                 printf("Enter first item number [from 1 to %d]: ", HEAD->count);
                                                 first = get_int();
@@ -200,9 +199,9 @@ int dbl_list()
                                                     second = buff;
                                                 }
                                             swap(HEAD, first, second);
-                                            puts("Once more swap? Press Enter - No, press any key - Yes");
+                                            puts("Once more swap? (y/n)");
                                             c = getch();
-                                        } while (c != 13);
+                                        } while (c != 'n');
                                     else
                                     {
                                         Q3=0;

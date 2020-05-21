@@ -5,7 +5,6 @@
 #include "./include/dbl_list.h"
 #include "./include/get.h"
 #include "./include/const.h"
-#include <conio.h>
 
 
 Head *make_head(int *bl) // Создание головы
@@ -182,8 +181,8 @@ void add_item(Head *HEAD, int *bl) // Добавление элемента в �
     char c;
     do
     {
-        printf("1 - Add node to start\n2 - Add node to end\n3 - Insert node\nPress Enter to stop\n");
-        c = getch();
+        printf("1 - Add node to start\n2 - Add node to end\n3 - Insert node\nPress 0 to stop\n");
+        c = getchar();
         if (c != 13) p = create_node(bl);
         switch (c)
         {
@@ -196,7 +195,7 @@ void add_item(Head *HEAD, int *bl) // Добавление элемента в �
             case 51:
                 insert(HEAD, p);
                 break;
-            case 13:
+            case 48:
                 break;
             default:
                 puts("Error, try again.\n");
@@ -292,9 +291,9 @@ void remove_node(Head *my_head)
         pos;    // Выбор позиции
     char c;
 
-    printf("Want to see a list of notes? Enter one if yes or another key to continue\n");
-    c = getch();
-    if (c == 49)
+    printf("Want to see a list of notes? (y/n)\n");
+    c = getchar();
+    if (c == 'y' || c == 'Y')
         print_managers(my_head);
     do
     {
@@ -334,12 +333,12 @@ void remove_node(Head *my_head)
 
         if (my_head->count > 0)
         {
-            printf("Удалить еще? Введите 1 - Да, любую другую клавишу - Нет\n");
-            c = getch();
+            printf("Delete more? (y/n)\n");
+            c = getchar();
         }
         else
-            c = 49;
-    } while (c == 49 && my_head->count > 0);
+            c = 'y';
+    } while ((c == 'y' || c == 'Y') && my_head->count > 0);
 }
 
 // Сравнение двух очередных элементов в списке
@@ -385,13 +384,13 @@ void sort(Head *HEAD)
     } while (type<1 || type>2);
     if(type == 1)
     {
-        printf("Sort Descending? Press Enter - Yes, Any Key - Sort Ascending");
-        decrease = getch();
+        printf("Sort Descending? (y/n)");
+        decrease = getchar();
     }
     else
     {
-        printf("Derive costs first? Press Enter - Yes, Any key - Print income first");
-        decrease = getch();
+        printf("Derive expenses first? (y/n)");
+        decrease = getchar();
     }
     p = HEAD->first;
     for (i=1; i<=HEAD->count-1; i++)
@@ -399,7 +398,7 @@ void sort(Head *HEAD)
         buff = p->next;
         for (j=i+1; j<=HEAD->count; j++)
         {
-            if ((decrease==13) ? (compare(buff, p, type) > 0) : (compare(buff, p, type) < 0)) // ???? buff > p, ?? ???????? ?? ???????
+            if ((decrease=='y') ? (compare(buff, p, type) > 0) : (compare(buff, p, type) < 0))
             {
                 swap(HEAD, i, j);
                 temp = p;
