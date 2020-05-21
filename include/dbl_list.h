@@ -39,9 +39,9 @@ void add_item(Head *HEAD, int *bl);   // Добавление элемента �
 
 void print_managers(Head *my_head);             // Вывод заметок
 
-void *add_first(Head *my_head, Node *new_node); // Добавление элемента в начало
+void add_first(Head *my_head, Node *new_node); // Добавление элемента в начало
 
-void *add_last(Head *my_head, Node *new_node); // Добавление элемента в конец
+void add_last(Head *my_head, Node *new_node); // Добавление элемента в конец
 
 void insert(Head *my_head, Node *new_node); // Добавление элемента в n-ую позицию
 

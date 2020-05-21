@@ -63,8 +63,10 @@ char *get_category() // Выбор категории. Возвращает чи
 void fill_node(manager *list, int *bl) // Ввод очередной структуры
 {
     system("cls");
+    char c;
     list->category = (char*)malloc(MAXLEN*sizeof(char));
     list->description = (char*)malloc(MAXLEN*sizeof(char));
+    while ((c = getchar()) != '\n' && c != EOF);
     if (list->category && list->description)
     {
         do
@@ -102,7 +104,7 @@ Node *create_node(int *bl) // Создание узла
     return new_node;
 }
 
-void *add_first(Head *my_head, Node *new_node) // Добавление элемента в начало
+void add_first(Head *my_head, Node *new_node) // Добавление элемента в начало
 {
     if(my_head&&new_node)
     {
@@ -118,7 +120,7 @@ void *add_first(Head *my_head, Node *new_node) // Добавление элем�
     }
 }
 
-void *add_last(Head *my_head, Node *new_node) // Добавление элемента в конец
+void add_last(Head *my_head, Node *new_node) // Добавление элемента в конец
 {
     if(my_head&&new_node)
     {
@@ -183,7 +185,7 @@ void add_item(Head *HEAD, int *bl) // Добавление элемента в �
     {
         printf("1 - Add node to start\n2 - Add node to end\n3 - Insert node\nPress 0 to stop\n");
         c = getchar();
-        if (c != 13) p = create_node(bl);
+        if (c != 48) p = create_node(bl);
         switch (c)
         {
             case 49:
@@ -200,7 +202,7 @@ void add_item(Head *HEAD, int *bl) // Добавление элемента в �
             default:
                 puts("Error, try again.\n");
         }
-    } while (c != 13);
+    } while (c != 48);
 }
 
 // Копирование узла
@@ -467,7 +469,6 @@ void edit_node(Head *list)
         variant2,
         exit_flag;
     float change_float;
-    int c;
     
     char *change_str;    
     Node *temp_node = NULL;
@@ -687,7 +688,7 @@ void search_managers(Head *list, int* bl)
     }
     while(exit_flag == 'Y' || exit_flag == 'y');
     
-    if (search_list != NULL & search_list->first != NULL)
+    if (search_list != NULL && search_list->first != NULL)
     {
         print_managers(search_list);
         system("pause");
