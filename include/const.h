@@ -13,3 +13,9 @@ char *categories[cat_num] =
 };
 
 #endif
+
+#ifdef __linux__
+    #define CLEAR "clear"
+#else
+    #define CLEAR "cls"
+#endif

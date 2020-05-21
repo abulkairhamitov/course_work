@@ -57,7 +57,7 @@ void sort(Head *HEAD);                                  // Сортировка 
 
 Head *selected(Head *my_head, int *bl);                 // Фильтр по заметкам по минимальной цене и категории
 
-Node *clean_node(Node *node);
+void clean_node(Node *node);
 
 Head *clean_list(Head *HEAD);
 

@@ -62,11 +62,9 @@ char *get_category() // Выбор категории. Возвращает чи
 
 void fill_node(manager *list, int *bl) // Ввод очередной структуры
 {
-    system("cls");
-    char c;
+    pause();
     list->category = (char*)malloc(MAXLEN*sizeof(char));
     list->description = (char*)malloc(MAXLEN*sizeof(char));
-    while ((c = getchar()) != '\n' && c != EOF);
     if (list->category && list->description)
     {
         do
@@ -180,29 +178,29 @@ void insert(Head *my_head, Node *new_node) // Добавление элемен�
 void add_item(Head *HEAD, int *bl) // Добавление элемента в список
 {
     Node *p=NULL;
-    char c;
+    int c;
     do
     {
         printf("1 - Add node to start\n2 - Add node to end\n3 - Insert node\nPress 0 to stop\n");
-        c = getchar();
-        if (c != 48) p = create_node(bl);
+        c = get_int();
+        if (c != 0) p = create_node(bl);
         switch (c)
         {
-            case 49:
+            case 1:
                 add_first(HEAD, p);
                 break;
-            case 50:
+            case 2:
                 add_last(HEAD, p);
                 break;
-            case 51:
+            case 3:
                 insert(HEAD, p);
                 break;
-            case 48:
+            case 0:
                 break;
             default:
                 puts("Error, try again.\n");
         }
-    } while (c != 48);
+    } while (c != 0);
 }
 
 // Копирование узла
@@ -277,12 +275,14 @@ void swap(Head *HEAD, int first, int second)
 }
 
 // Высвобождение памяти узла
-Node *clean_node(Node *node)
+void clean_node(Node *node)
 {
-    free((node->info).description);
+    if((node->info).description = NULL)
+        free((node->info).description);
+    if((node->info).category != NULL)
+        free((node->info).category);
+    (node->info).category = NULL;
     (node->info).description = NULL;
-    free(node);
-    return NULL;
 }
 
 // Удаление узла
@@ -293,9 +293,9 @@ void remove_node(Head *my_head)
         pos;    // Выбор позиции
     char c;
 
-    printf("Want to see a list of notes? (y/n)\n");
-    c = getchar();
-    if (c == 'y' || c == 'Y')
+    printf("Want to see a list of notes? (1/0)\n");
+    c = get_int();
+    if (c == 1)
         print_managers(my_head);
     do
     {
@@ -307,7 +307,7 @@ void remove_node(Head *my_head)
         p = my_head->first;
         if (my_head->count > 1)
         {
-            for (i = 1; i < pos - 1; i++)
+            for (i = 1; i < pos; i++)
                 p = p->next;
             if (pos == 1)
             {
@@ -335,12 +335,12 @@ void remove_node(Head *my_head)
 
         if (my_head->count > 0)
         {
-            printf("Delete more? (y/n)\n");
-            c = getchar();
+            printf("Delete more? (1/0)\n");
+            c = get_int();
         }
         else
-            c = 'y';
-    } while ((c == 'y' || c == 'Y') && my_head->count > 0);
+            c = 1;
+    } while ((c == 1) && my_head->count > 0);
 }
 
 // Сравнение двух очередных элементов в списке
@@ -375,7 +375,7 @@ void sort(Head *HEAD)
 {
     int i, j,       // Переменные в цикле
         type;       // Вид сортировки
-    char decrease;  // Enter - по убыванию. Иначе по возрастанию
+    int decrease;  // Enter - по убыванию. Иначе по возрастанию
     Node *p=NULL, *buff=NULL, *temp = NULL;
 
     do
@@ -386,13 +386,13 @@ void sort(Head *HEAD)
     } while (type<1 || type>2);
     if(type == 1)
     {
-        printf("Sort Descending? (y/n)");
-        decrease = getchar();
+        printf("Sort Descending? (1/0)\n");
+        decrease = get_int();
     }
     else
     {
-        printf("Derive expenses first? (y/n)");
-        decrease = getchar();
+        printf("Derive expenses first? (1/0)\n");
+        decrease = get_int();
     }
     p = HEAD->first;
     for (i=1; i<=HEAD->count-1; i++)
@@ -400,7 +400,7 @@ void sort(Head *HEAD)
         buff = p->next;
         for (j=i+1; j<=HEAD->count; j++)
         {
-            if ((decrease=='y') ? (compare(buff, p, type) > 0) : (compare(buff, p, type) < 0))
+            if ((decrease==1) ? (compare(buff, p, type) > 0) : (compare(buff, p, type) < 0))
             {
                 swap(HEAD, i, j);
                 temp = p;
@@ -456,7 +456,7 @@ Head *clean_list(Head *HEAD)
         p = p->next;
         temp->next = NULL;
         temp->prev = NULL;
-        temp = clean_node(temp);
+        clean_node(temp);
     }
     free(HEAD);
     return NULL;

@@ -73,6 +73,12 @@ void Help()
     printf("  For actions with the list, select item 3. Filter the list by the specified categories - item 4. Display the result - 5.\n");
 }
 
+void pause()
+{
+    puts("Press Enter to continue");
+    getchar();
+}
+
 int dbl_list()
 {
     Head *HEAD      = NULL,     // Голова списка
@@ -85,7 +91,7 @@ int dbl_list()
         first,                  // Элемент сортировки
         buff,                   // Для swap first и second
         second;                 // Элемент сортировки
-    char c = 0;                 // Ввод числа или Enter
+    int c = 0;                 // Ввод числа или Enter
     HEAD = make_head(&bl);      // Голова
 
     if(bl)
@@ -181,10 +187,10 @@ int dbl_list()
                                         {
                                             do
                                             {
-                                                system("cls");
-                                                printf("Do you want see list of managers? (y/n)\n");
-                                                c = getchar();
-                                                if (c == 'Y' || c == 'y')
+                                                pause();
+                                                printf("Do you want see list of managers? (1/0)\n");
+                                                c = get_int();
+                                                if (c == 1)
                                                     print_managers(HEAD);
                                                 printf("Enter first item number [from 1 to %d]: ", HEAD->count);
                                                 first = get_int();
@@ -198,9 +204,9 @@ int dbl_list()
                                                     second = buff;
                                                 }
                                             swap(HEAD, first, second);
-                                            puts("Once more swap? (y/n)");
-                                            c = getchar();
-                                        } while (c != 'n');
+                                            puts("Once more swap? (1/0)");
+                                            c = get_int();
+                                        } while (c != 0);
                                     else
                                     {
                                         Q3=0;
@@ -213,7 +219,7 @@ int dbl_list()
                                 case 3:
                                     sort(HEAD);
                                     puts("Successfully sorted.");
-                                    system("pause");
+                                    pause();
                                     break;
                                 case 4:
                                     add_item(HEAD, &bl);
@@ -224,7 +230,7 @@ int dbl_list()
                                         puts("Successful write to file");
                                     else
                                         puts("Error write to file");
-                                    system("pause");
+                                    pause();
                                     break;
                                 case 6:
                                     edit_node(HEAD);
@@ -316,7 +322,7 @@ int dbl_list()
                     printf("Error! Try again!\n");
                     break;
             }
-            system("pause");
+            pause();
         } while (Q && bl);
     } else printf("Error memory");
     // Высвобождение памяти
