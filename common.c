@@ -200,7 +200,7 @@ int dbl_list()
                                                 }
                                             swap(HEAD, first, second);
                                             puts("Once more swap? (y/n)");
-                                            c = getch();
+                                            c = getchar();
                                         } while (c != 'n');
                                     else
                                     {
