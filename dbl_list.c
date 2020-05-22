@@ -62,7 +62,6 @@ char *get_category() // Выбор категории. Возвращает чи
 
 void fill_node(manager *list, int *bl) // Ввод очередной структуры
 {
-    pause();
     list->category = (char*)malloc(MAXLEN*sizeof(char));
     list->description = (char*)malloc(MAXLEN*sizeof(char));
     if (list->category && list->description)
@@ -277,7 +276,7 @@ void swap(Head *HEAD, int first, int second)
 // Высвобождение памяти узла
 void clean_node(Node *node)
 {
-    if((node->info).description = NULL)
+    if((node->info).description != NULL)
         free((node->info).description);
     if((node->info).category != NULL)
         free((node->info).category);

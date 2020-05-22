@@ -6,12 +6,17 @@
 #include "./include/common.h"
 #include "./include/get.h"
 #include "./include/w_file.h"
+#ifdef __linux__
+    #define CLEAR "clear"
+#else
+    #define CLEAR "cls"
+#endif
 
 // Меню
 int Menu(int q)
 {
     int Q;
-    system("cls");
+    system(CLEAR);
     puts("MENU");
     switch(q)
     {
@@ -65,7 +70,7 @@ int Menu(int q)
 // Справка
 void Help()
 {
-    system("cls");
+    system(CLEAR);
     printf("\tHelp\n");
     printf("  First you need to enter notes (your income or expenses). To enter the input press 1\n");
     printf("  Notes have the following characteristics:\n");
