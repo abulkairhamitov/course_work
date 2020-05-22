@@ -45,8 +45,9 @@ void print_managers(Head *my_head)
 char *get_category() // Выбор категории. Возвращает число (пункт в списка категории)
 {
     char c;     // Переменная для "fflush"
-    int q,      // Выбор пункта из списка категорий 
+    int q,      // Выбор пункта из списка категорий
         i;      // Индекс категории
+    char *str;  // Очередная категория
     for (i = 0; i < cat_num; i++)
         printf("%d. %s\n", i+1, categories[i]);
     do
@@ -57,7 +58,9 @@ char *get_category() // Выбор категории. Возвращает чи
     } while (q <= 0 || q > (int)sizeof(categories)/sizeof(char*));
     while ((c = getchar()) != '\n' && c != EOF);
     printf("Your choice %s\n", categories[q-1]);
-    return categories[q-1];
+    str = (char*)malloc(strlen(categories[q-1])*sizeof(char));
+    strcpy(str, categories[q-1]);
+    return str;
 }
 
 void fill_node(manager *list, int *bl) // Ввод очередной структуры
