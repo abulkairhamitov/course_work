@@ -134,7 +134,7 @@ void add_last(Head *my_head, Node *new_node) // Добавление элеме�
         new_node->next = NULL;
         my_head->last = new_node;
         my_head->count++;
-    } else;
+    }
 }
 
 void insert(Head *my_head, Node *new_node) // Добавление элемента в n-ую позицию

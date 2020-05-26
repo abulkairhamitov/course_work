@@ -45,7 +45,6 @@ Node *convert_to_node(char **s2)
     else
     {
         puts("Out if memory! Program terminated");
-        p = NULL;
     }
     return p;
 }
@@ -149,7 +148,6 @@ int get_database(Head *HEAD, int MODE)
                 valid_file = 2;
             else
                 valid_file = 1;
-        else;
     }
     else
         valid_file = 0;
