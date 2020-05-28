@@ -1,9 +1,7 @@
-#ifndef CONST_H
-#define CONST_H
-#define cat_num 5
+#include "./include/const.h"
 
 //Категории затрат/доходов
-char *categories[cat_num] = 
+const char * const categories[cat_num] = 
 {
     "Food", 
     "Transport",
@@ -11,5 +9,3 @@ char *categories[cat_num] =
     "Social", 
     "Other"
 };
-
-#endif

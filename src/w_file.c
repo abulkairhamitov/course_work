@@ -5,6 +5,7 @@
 #include "./include/dbl_list.h"
 #include "./include/get.h"
 
+// Высвобождение памяти для массива строк
 void clear_str_array(char **str, int n)
 {
     int i;
@@ -113,6 +114,7 @@ int get_database(Head *HEAD, int MODE)
         puts("Type path to file or his name: ");
         path = get_string();
         df = fopen(path, "r");
+        free(path);
     }
     else df = fopen("database.txt", "r"); // Чтение из файла по умолчанию
     if(df != NULL)
@@ -143,11 +145,13 @@ int get_database(Head *HEAD, int MODE)
                 puts("Row data not available!");
             }
         }
-        if (fclose(df)!=EOF)
+        if(fclose(df)!=EOF)
+        {
             if (i == 0)
                 valid_file = 2;
             else
                 valid_file = 1;
+        }
     }
     else
         valid_file = 0;
@@ -165,6 +169,7 @@ int write_to_file(Head *HEAD, int MODE)
         puts("Type path to file or his name: ");
         path = get_string();
         file = fopen(path, "w");
+        free(path);
     }
     else file = fopen("output.txt", "w"); // Записать в файл по умолчанию
 

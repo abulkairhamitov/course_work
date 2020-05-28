@@ -3,6 +3,7 @@
 #include <malloc.h>
 #include <string.h>
 #include "./include/get.h"
+#include "./include/const.h"
 
 char *get_string() // Возвращает указатель на введенную строку
 {

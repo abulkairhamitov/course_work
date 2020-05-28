@@ -27,29 +27,29 @@ typedef struct
 
 #endif // LIST_H
 
-Head *make_head(int *bl); // Создание головы
+Head *make_head(int *bl);                       // Создание головы
 
-Node *create_node(int *bl); // Создание узла
+Node *create_node(int *bl);                     // Создание узла
 
 char *get_category();                           // Ввод категории 
 
-void fill_node(manager *list, int *bl);
+void fill_node(manager *list, int *bl);         // Ввод узла
 
-void add_item(Head *HEAD, int *bl);   // Добавление элемента в список
+void add_item(Head *HEAD, int *bl);             // Добавление элемента в список
 
 void print_managers(Head *my_head);             // Вывод заметок
 
-void add_first(Head *my_head, Node *new_node); // Добавление элемента в начало
+void add_first(Head *my_head, Node *new_node);  // Добавление элемента в начало
 
-void add_last(Head *my_head, Node *new_node); // Добавление элемента в конец
+void add_last(Head *my_head, Node *new_node);   // Добавление элемента в конец
 
-void insert(Head *my_head, Node *new_node); // Добавление элемента в n-ую позицию
+void insert(Head *my_head, Node *new_node);     // Добавление элемента в n-ую позицию
 
 Node *copy_node(Node *NODE, int *bl);           // Копирование элемента списка и возвращает копию
 
-void swap(Head *HEAD, int first, int second);
+void swap(Head *HEAD, int first, int second);   // Перестановка двух элементов
 
-void remove_node(Head *my_head);
+void remove_node(Head *my_head);                // Удаление узла
 
 int compare(Node *left, Node *right, int type);         // Сравнение элементов списка для сортировки
 
@@ -57,12 +57,12 @@ void sort(Head *HEAD);                                  // Сортировка 
 
 Head *selected(Head *my_head, int *bl);                 // Фильтр по заметкам по минимальной цене и категории
 
-void clean_node(Node *node);
+void clean_node(Node *node);                            // Высвобождение памяти узла
 
-Head *clean_list(Head *HEAD);
+Head *clean_list(Head *HEAD);                           // Высвобождение памяти списка
 
-void edit_node(Head *list);
+void edit_node(Head *list);                             // Редактирование узла
 
-Head *search(Head *list, manager search_param, int field, int* bl);
+Head *search(Head *list, manager search_param, int field, int* bl); // Поиск (1)
 
-void search_managers(Head *list, int* bl);
+void search_managers(Head *list, int* bl);                          // Поиск (2)

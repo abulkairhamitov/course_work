@@ -1,2 +1,2 @@
-gcc *.c -o main
+gcc -Wall src/*.c -o main
 start main.exe

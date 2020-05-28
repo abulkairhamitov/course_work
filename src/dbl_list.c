@@ -5,6 +5,7 @@
 #include "./include/dbl_list.h"
 #include "./include/get.h"
 #include "./include/const.h"
+#include "./include/common.h"
 
 
 Head *make_head(int *bl) // Создание головы
@@ -44,19 +45,18 @@ void print_managers(Head *my_head)
 
 char *get_category() // Выбор категории. Возвращает число (пункт в списка категории)
 {
-    char c;     // Переменная для "fflush"
     int q,      // Выбор пункта из списка категорий
         i;      // Индекс категории
     char *str;  // Очередная категория
     for (i = 0; i < cat_num; i++)
         printf("%d. %s\n", i+1, categories[i]);
+    //Очистка потока ввода
     do
     {
-        scanf("%d", &q);
+        q = get_int();
         if (q <= 0 || q > (int)sizeof(categories)/sizeof(char*))
             printf("You entered an invalid value, try again: \n");
     } while (q <= 0 || q > (int)sizeof(categories)/sizeof(char*));
-    while ((c = getchar()) != '\n' && c != EOF);
     printf("Your choice %s\n", categories[q-1]);
     str = (char*)malloc(strlen(categories[q-1])*sizeof(char));
     strcpy(str, categories[q-1]);
@@ -295,7 +295,7 @@ void remove_node(Head *my_head)
         pos;    // Выбор позиции
     char c;
 
-    printf("Want to see a list of notes? (1/0)\n");
+    printf("Want to see a list of notes? (1/any)\n");
     c = get_int();
     if (c == 1)
         print_managers(my_head);
@@ -334,10 +334,11 @@ void remove_node(Head *my_head)
         }
         my_head->count--;
         clean_node(p);
+        free(p);
 
         if (my_head->count > 0)
         {
-            printf("Delete more? (1/0)\n");
+            printf("Delete more? (1/any)\n");
             c = get_int();
         }
         else
@@ -388,12 +389,12 @@ void sort(Head *HEAD)
     } while (type<1 || type>2);
     if(type == 1)
     {
-        printf("Sort Descending? (1/0)\n");
+        printf("Sort Descending? (1/any)\n");
         decrease = get_int();
     }
     else
     {
-        printf("Derive expenses first? (1/0)\n");
+        printf("Derive expenses first? (1/any)\n");
         decrease = get_int();
     }
     p = HEAD->first;
@@ -451,7 +452,6 @@ Head *clean_list(Head *HEAD)
     int i;
 
     p = HEAD->first;
-    HEAD->count = 0;
     for (i = 0; i < HEAD->count; i++)
     {
         temp = p;
@@ -459,11 +459,13 @@ Head *clean_list(Head *HEAD)
         temp->next = NULL;
         temp->prev = NULL;
         clean_node(temp);
+        free(temp);
     }
     free(HEAD);
     return NULL;
 }
 
+// Редактирование узла
 void edit_node(Head *list)
 {
     int change_int,
@@ -501,24 +503,24 @@ void edit_node(Head *list)
         switch (variant2)
         {
             case 1:
-                system("cls");
+                system(CLEAR);
                 printf("Enter expenses or income. 1 - Income 2 - Expenses: ");
                 change_int = get_int();
                 (temp_node->info).expenses_income = change_int;
             break;
             case 2:
-                system("cls");
+                system(CLEAR);
                 (temp_node->info).category = get_category();
             break;
             case 3:
-                system("cls");
+                system(CLEAR);
                 printf("Enter description");
                 change_str = get_string();
                 free((temp_node->info).description);
                 (temp_node->info).description = change_str;
             break;
             case 4:
-                system("cls");
+                system(CLEAR);
                 change_float = get_float();
                 (temp_node->info).money = change_float;
             break;
@@ -533,6 +535,7 @@ void edit_node(Head *list)
     while(exit_flag);
 }
 
+// Поиск (1)
 Head *search(Head *list, manager search_param, int field, int* bl)
 {
     Head* search_result = NULL;
@@ -579,6 +582,7 @@ Head *search(Head *list, manager search_param, int field, int* bl)
     return search_result;
 }
 
+// Поиск (2)
 void search_managers(Head *list, int* bl)
 {
     int variant,
@@ -681,24 +685,24 @@ void search_managers(Head *list, int* bl)
         
         if(i != 4)
         {
-            puts("\nDo you want to choose more param? Press y, else any key");
+            puts("\nDo you want to choose more param? (1/any)");
             printf(">");
             exit_flag = getchar();
         }
         else
-            exit_flag = 'n';
+            exit_flag = '0';
     }
-    while(exit_flag == 'Y' || exit_flag == 'y');
+    while(exit_flag == 1);
     
     if (search_list != NULL && search_list->first != NULL)
     {
         print_managers(search_list);
-        system("pause");
+        pause();
     }
     else
     {
         printf("Nothing found\n");
-        system("pause");
+        pause();
     }
 
     if (i != 0)

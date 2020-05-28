@@ -1,6 +1,5 @@
 #ifndef W_FILE_H
 #define W_FILE_H
-#define cat_num 5
 
 char **simple_split(char *str, int length, char sep);   // Разбиение строк над подстроки по сепартору
 int get_database(Head *HEAD, int MODE);                 // Чтение из файла

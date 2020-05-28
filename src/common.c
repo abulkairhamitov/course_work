@@ -6,16 +6,12 @@
 #include "./include/common.h"
 #include "./include/get.h"
 #include "./include/w_file.h"
-#ifdef __linux__
-    #define CLEAR "clear"
-#else
-    #define CLEAR "cls"
-#endif
+#include "./include/const.h"
 
 // Меню
 int Menu(int q)
 {
-    int Q;
+    int Q;          // Выбор пользователя
     system(CLEAR);
     puts("MENU");
     switch(q)
@@ -61,9 +57,8 @@ int Menu(int q)
     }
 
     printf("Select menu item - ");
-    scanf("%d", &Q);
+    Q = get_int();
     printf("\n");
-    fflush(stdin);
     return Q;
 }
 
@@ -78,12 +73,14 @@ void Help()
     printf("  For actions with the list, select item 3. Filter the list by the specified categories - item 4. Display the result - 5.\n");
 }
 
+// Замена к system("pause")
 void pause()
 {
     puts("Press Enter to continue");
     getchar();
 }
 
+// Работа с линейным двусвязным списком 
 int dbl_list()
 {
     Head *HEAD      = NULL,     // Голова списка
@@ -96,7 +93,7 @@ int dbl_list()
         first,                  // Элемент сортировки
         buff,                   // Для swap first и second
         second;                 // Элемент сортировки
-    int c = 0;                 // Ввод числа или Enter
+    int c = 0;                  // Ввод числа или Enter
     HEAD = make_head(&bl);      // Голова
 
     if(bl)
@@ -193,7 +190,7 @@ int dbl_list()
                                             do
                                             {
                                                 pause();
-                                                printf("Do you want see list of managers? (1/0)\n");
+                                                printf("Do you want see list of managers? (1/any)\n");
                                                 c = get_int();
                                                 if (c == 1)
                                                     print_managers(HEAD);
@@ -209,9 +206,9 @@ int dbl_list()
                                                     second = buff;
                                                 }
                                             swap(HEAD, first, second);
-                                            puts("Once more swap? (1/0)");
+                                            puts("Once more swap? (1/any)");
                                             c = get_int();
-                                        } while (c != 0);
+                                        } while (c == 1);
                                     else
                                     {
                                         Q3=0;
