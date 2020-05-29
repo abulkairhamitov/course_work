@@ -90,6 +90,7 @@ char **simple_split(char *str, int length, char sep)
                     m++;
                 }
             }
+            str_array[m][j-k]='\0';
         } else clear_str_array(str_array,count);
     }
     return str_array;
@@ -116,7 +117,7 @@ int get_database(Head *HEAD, int MODE)
         df = fopen(path, "r");
         free(path);
     }
-    else df = fopen("database.txt", "r"); // Чтение из файла по умолчанию
+    else df = fopen("database.csv", "r"); // Чтение из файла по умолчанию
     if(df != NULL)
     {
         sep=';';    // Сепоратор
@@ -171,7 +172,7 @@ int write_to_file(Head *HEAD, int MODE)
         file = fopen(path, "w");
         free(path);
     }
-    else file = fopen("output.txt", "w"); // Записать в файл по умолчанию
+    else file = fopen("output.csv", "w"); // Записать в файл по умолчанию
 
 	if (file == NULL)
 	{

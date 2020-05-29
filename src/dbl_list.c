@@ -25,19 +25,19 @@ void print_managers(Head *my_head)
 {
     Node *p;
     int i;
-    printf("|Expenses/Income| category|          Description|       Money|\n");
-    printf("|_______________|_________|_____________________|____________|\n");
+    printf("|Num|Expenses/Income| category|          Description|       Money|\n");
+    printf("|___|_______________|_________|_____________________|____________|\n");
     p = my_head->first;
     for (i = 0; i < my_head->count; i++)
     {
         if( (p->info).expenses_income == 1)
         {
-            printf("|         Income|%9.22s|%21.22s|%12.0f|\n", (p->info).category, (p->info).description, (p->info).money);
-            printf("|_______________|_________|_____________________|____________|\n");
+            printf("|%3d|         Income|%9.22s|%21.22s|%12.0f|\n", i+1, (p->info).category, (p->info).description, (p->info).money);
+            printf("|___|_______________|_________|_____________________|____________|\n");
         } else
         {
-            printf("|        Expense|%9.22s|%21.22s|%12.0f|\n", (p->info).category, (p->info).description, (p->info).money);
-            printf("|_______________|_________|_____________________|____________|\n");
+            printf("|%3d|        Expense|%9.22s|%21.22s|%12.0f|\n", i+1, (p->info).category, (p->info).description, (p->info).money);
+            printf("|___|_______________|_________|_____________________|____________|\n");
         }
         p = p->next;
     }
@@ -65,30 +65,24 @@ char *get_category() // Выбор категории. Возвращает чи
 
 void fill_node(manager *list, int *bl) // Ввод очередной структуры
 {
-    list->category = (char*)malloc(MAXLEN*sizeof(char));
-    list->description = (char*)malloc(MAXLEN*sizeof(char));
-    if (list->category && list->description)
+    do
     {
-        do
-        {
-            printf("Choose this income or expense. Income - 1, expense - 2\n");
-            list->expenses_income = get_int();
-            if(list->expenses_income != 1 && list->expenses_income != 2)
-                puts("You entered an invalid number");
-        } while (list->expenses_income <= 0 || list->expenses_income > 2);
-        printf("Select the desired category: \n");
-        list->category = get_category();
-        printf("Enter a description: \n");
-        list->description = get_string(bl);
-        do
-        {
-            printf("Enter the amount of money: \n");
-            list->money = get_float();
-            if(list->money <= 0)
-                puts("The number must be positive!");
-        } while (list->money <= 0);
-    }
-    else *bl = 0;
+        printf("Choose this income or expense. Income - 1, Expense - 2\n");
+        list->expenses_income = get_int();
+        if(list->expenses_income != 1 && list->expenses_income != 2)
+            puts("You entered an invalid number");
+    } while (list->expenses_income <= 0 || list->expenses_income > 2);
+    printf("Select the desired category: \n");
+    list->category = get_category();
+    printf("Enter a description: \n");
+    list->description = get_string(bl);
+    do
+    {
+        printf("Enter the amount of money: \n");
+        list->money = get_float();
+        if(list->money <= 0)
+            puts("The number must be positive!");
+    } while (list->money <= 0);
 }
 
 Node *create_node(int *bl) // Создание узла
@@ -279,12 +273,13 @@ void swap(Head *HEAD, int first, int second)
 // Высвобождение памяти узла
 void clean_node(Node *node)
 {
-    if((node->info).description != NULL)
+    //if((node->info).description != NULL)
         free((node->info).description);
-    if((node->info).category != NULL)
+    //if((node->info).category != NULL)
         free((node->info).category);
     (node->info).category = NULL;
     (node->info).description = NULL;
+    free(node);
 }
 
 // Удаление узла
@@ -334,7 +329,6 @@ void remove_node(Head *my_head)
         }
         my_head->count--;
         clean_node(p);
-        free(p);
 
         if (my_head->count > 0)
         {
@@ -431,7 +425,7 @@ Head *selected(Head *my_head, int *bl)
     expenses_income = get_int();
     printf("The new list will consist only of this category: \n");
     category = get_category();
-    printf("The maximum amount. For example: if you enter 100, then amounts> 100 will not be displayed: ");
+    printf("The maximum amount. For example: if you enter 100, then amounts > 100 will not be displayed: ");
     max_money = get_float();
 
     p = my_head->first;
@@ -441,6 +435,7 @@ Head *selected(Head *my_head, int *bl)
             add_last(NEW_HEAD, copy_node(p, bl));
         p = p->next;
     }
+    free(category);
 
     return NEW_HEAD;
 }
@@ -459,7 +454,6 @@ Head *clean_list(Head *HEAD)
         temp->next = NULL;
         temp->prev = NULL;
         clean_node(temp);
-        free(temp);
     }
     free(HEAD);
     return NULL;
@@ -476,7 +470,6 @@ void edit_node(Head *list)
     
     char *change_str;    
     Node *temp_node = NULL;
-    change_str = (char*)malloc(MAXLEN*sizeof(char));
     print_managers(list);
     do
     {
@@ -510,17 +503,21 @@ void edit_node(Head *list)
             break;
             case 2:
                 system(CLEAR);
-                (temp_node->info).category = get_category();
+                printf("Enter category\n");
+                change_str = get_category();
+                free((temp_node->info).category);
+                (temp_node->info).category = change_str;
             break;
             case 3:
                 system(CLEAR);
-                printf("Enter description");
+                printf("Enter description\n");
                 change_str = get_string();
                 free((temp_node->info).description);
                 (temp_node->info).description = change_str;
             break;
             case 4:
                 system(CLEAR);
+                printf("Enter money\n");
                 change_float = get_float();
                 (temp_node->info).money = change_float;
             break;
@@ -540,7 +537,6 @@ Head *search(Head *list, manager search_param, int field, int* bl)
 {
     Head* search_result = NULL;
     Node* temp_node = NULL;
-    Node* cp_node = NULL;
     
     search_result = make_head(bl);
     switch(field)
@@ -549,32 +545,28 @@ Head *search(Head *list, manager search_param, int field, int* bl)
             for (temp_node = list->first; temp_node; temp_node = temp_node->next)
                 if ((temp_node->info).expenses_income == search_param.expenses_income)
                 {
-                    cp_node = copy_node(temp_node, bl);
-                    add_last(search_result, cp_node);
+                    add_last(search_result, copy_node(temp_node, bl));
                 }
             break;
         case 2:
             for (temp_node = list->first; temp_node; temp_node = temp_node->next)
                 if (!strcmp((temp_node->info).category, search_param.category))
                 {
-                    cp_node = copy_node(temp_node, bl);
-                    add_last(search_result, cp_node);
+                    add_last(search_result, copy_node(temp_node, bl));
                 }
             break;
         case 3:
             for (temp_node = list->first; temp_node; temp_node = temp_node->next)
                 if (!strcmp((temp_node->info).description, search_param.description))
                 {
-                    cp_node = copy_node(temp_node, bl);
-                    add_last(search_result, cp_node);
+                    add_last(search_result, copy_node(temp_node, bl));
                 }
             break;
         case 4:
             for (temp_node = list->first; temp_node; temp_node = temp_node->next)
                 if ((temp_node->info).money == search_param.money)
                 {
-                    cp_node = copy_node(temp_node, bl);
-                    add_last(search_result, cp_node);
+                    add_last(search_result, copy_node(temp_node, bl));
                 }
             break;
     }
@@ -587,17 +579,17 @@ void search_managers(Head *list, int* bl)
 {
     int variant,
         i;
-    Head *search_list = NULL,
-         *temp = NULL;
+    Head    *search_list = NULL,
+            *temp        = NULL;
 
     manager search_param;
-    char exit_flag;
+    int exit_flag;
     unsigned char flags[6];
     
     for (i = 0; i < 6; i++)
         flags[i] = 1;
     
-    search_list = make_head(bl);
+    search_list = list;
     i = 0;
     do
     {
@@ -616,11 +608,8 @@ void search_managers(Head *list, int* bl)
                     search_param.expenses_income = get_int();
                     flags[0] = 0;
                     temp = search_list;
-                    if(i == 0)
-                        search_list = search(list, search_param, 1, bl);
-                    else
-                        search_list = search(search_list, search_param, 1, bl);
-                    if (i != 0)
+                    search_list = search(search_list, search_param, 1, bl);
+                    if(i != 0)
                         temp = clean_list(temp);
                     i++;
                 }
@@ -630,16 +619,15 @@ void search_managers(Head *list, int* bl)
             case 2:
                 if (flags[1] == 1)                    
                 {
+                    puts("Enter category");
                     search_param.category = get_category();
                     flags[1] = 0;
                     temp = search_list;
-                    if(i == 0)
-                        search_list = search(list, search_param, 2, bl);
-                    else
-                        search_list = search(search_list, search_param, 2, bl);
-                    if (i != 0)
+                    search_list = search(search_list, search_param, 2, bl);
+                    if(i != 0)
                         temp = clean_list(temp);
                     i++;
+                    free(search_param.category);
                 }
                 else
                     printf("You re-enter");
@@ -647,13 +635,12 @@ void search_managers(Head *list, int* bl)
             case 3:
                 if (flags[2] == 1)                    
                 {
+                    puts("Enter description");
                     search_param.description = get_string();
                     flags[2] = 0;
-                    if(i == 0)
-                        search_list = search(list, search_param, 3, bl);
-                    else
-                        search_list = search(search_list, search_param, 3, bl);
-                    if (i != 0)
+                    temp = search_list;
+                    search_list = search(search_list, search_param, 3, bl);
+                    if(i != 0)
                         temp = clean_list(temp);
                     i++;
                     free(search_param.description);
@@ -664,14 +651,12 @@ void search_managers(Head *list, int* bl)
             case 4:
                 if (flags[3] == 1)                    
                 {
+                    puts("Enter money");
                     search_param.money = get_int();
                     flags[3] = 0;
                     temp = search_list;
-                    if(i == 0)
-                        search_list = search(list, search_param, 4, bl);
-                    else
-                        search_list = search(search_list, search_param, 4, bl);
-                    if (i != 0)
+                    search_list = search(search_list, search_param, 4, bl);
+                    if(i != 0)
                         temp = clean_list(temp);
                     i++;
                 }
@@ -687,10 +672,10 @@ void search_managers(Head *list, int* bl)
         {
             puts("\nDo you want to choose more param? (1/any)");
             printf(">");
-            exit_flag = getchar();
+            exit_flag = get_int();
         }
         else
-            exit_flag = '0';
+            exit_flag = 0;
     }
     while(exit_flag == 1);
     
@@ -707,6 +692,4 @@ void search_managers(Head *list, int* bl)
 
     if (i != 0)
         search_list = clean_list(search_list);
-    if (i > 2)
-        temp = clean_list(temp);
 }

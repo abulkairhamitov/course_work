@@ -31,7 +31,7 @@ int Menu(int q)
             puts("0 - Come back");
             break;
         case 12:
-            puts("1 - Input from default file (database.txt)");
+            puts("1 - Input from default file (database.csv)");
             puts("2 - Select a file");
             puts("0 - Come back");
             break;
@@ -51,7 +51,7 @@ int Menu(int q)
             puts("0 - Come back");
             break;
         case 52:
-            puts("1 - Write to file by default(output.txt)");
+            puts("1 - Write to file by default(output.csv)");
             puts("2 - Select a file");
             puts("0 - Come back");
     }
@@ -189,7 +189,6 @@ int dbl_list()
                                         {
                                             do
                                             {
-                                                pause();
                                                 printf("Do you want see list of managers? (1/any)\n");
                                                 c = get_int();
                                                 if (c == 1)
@@ -198,6 +197,8 @@ int dbl_list()
                                                 first = get_int();
                                                 printf("Enter second item number [from 1 to %d]: ", HEAD->count);
                                                 second = get_int();
+                                                if((first<1 || second>HEAD->count) || (second<1 || first>HEAD->count))
+                                                    puts("Incorrect input");
                                             } while ((first<1 || second>HEAD->count) || (second<1 || first>HEAD->count));
                                             if (first>second)
                                                 {
@@ -328,8 +329,7 @@ int dbl_list()
         } while (Q && bl);
     } else printf("Error memory");
     // Высвобождение памяти
-    if (HEAD->count != 0)
-        HEAD = clean_list(HEAD);
+    HEAD = clean_list(HEAD);
     if (NEW_HEAD)
         NEW_HEAD = clean_list(NEW_HEAD);
     return 0;
