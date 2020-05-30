@@ -671,7 +671,6 @@ void search_managers(Head *list, int* bl)
         if(i != 4)
         {
             puts("\nDo you want to choose more param? (1/any)");
-            printf(">");
             exit_flag = get_int();
         }
         else

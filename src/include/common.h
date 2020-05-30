@@ -1,8 +1,6 @@
 #ifndef COMMON_H
 #define COMMON_H
 
-void stdin_clear();     // Очистка потока ввода
-
 int Menu(int q);        // Меню
 
 void Help();            // Справка

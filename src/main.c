@@ -10,21 +10,3 @@ int main()
 	dbl_list();
 	return 0;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

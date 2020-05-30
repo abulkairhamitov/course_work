@@ -14,8 +14,8 @@ typedef struct
 typedef struct manager_elem
 {
     manager info;
-    struct manager_elem *next;
-    struct manager_elem *prev;
+    struct manager_elem *next; // Адрес следующего элемента списка
+    struct manager_elem *prev; // Адрес предыдущего элемента списка
 } Node; // Очередной элемент (узел) списка
 
 typedef struct
@@ -23,7 +23,7 @@ typedef struct
     int count;
     Node *first;
     Node *last;
-} Head; // Голова списки
+} Head; // Голова списка
 
 #endif // LIST_H
 
